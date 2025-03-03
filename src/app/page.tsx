@@ -12,9 +12,6 @@ export default async function Home() {
       redirect('/login')
     }
 
-  // console.log("Auth Data:", data);
-  // console.log("Auth Error:", error);
-
   return (
     <div className="w-full">
      <TaskPage/>

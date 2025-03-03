@@ -1,19 +1,31 @@
 import { useRouter } from 'next/navigation';
 import { getCoreRowModel, flexRender, useReactTable, ColumnDef } from '@tanstack/react-table';
 
-interface TableProps<TData extends { id: number }> {
-  columns: ColumnDef<TData>[];
-  data: TData[];
-  rowClickPath?: string; // Path to redirect when a row is clicked
-}
+export type IData = {
+  created_at: string;
+  description: string;
+  id: string; 
+  name: string;
+  user_id: string;
+};
 
-export default function Table<TData extends { id: number }>({ columns, data, rowClickPath }: TableProps<TData>) {
+type IProps = {
+  columns: ColumnDef<IData>[];
+  data: IData[];
+  rowClickPath: string;
+};
+
+export default function Table({ columns, data, rowClickPath }: IProps) {
   const router = useRouter();
-  const table = useReactTable({ columns, data, getCoreRowModel: getCoreRowModel() });
+  const table = useReactTable<IData>({
+    columns,
+    data,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
-  const handleRowClick = (id: number) => {
-    router.push(`/${rowClickPath}/${id}`); 
-    console.log("id", id)
+  const handleRowClick = (id: string) => {
+    router.push(`/${rowClickPath}/${id}`);
+    console.log('id', id);
   };
 
   return (
@@ -32,9 +44,9 @@ export default function Table<TData extends { id: number }>({ columns, data, row
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <tr 
-              key={row.id} 
-              className="border border-gray-300 cursor-pointer hover:bg-gray-100" 
+            <tr
+              key={row.id}
+              className="border border-gray-300 cursor-pointer hover:bg-gray-100"
               onClick={() => handleRowClick(row.original.id)}
             >
               {row.getVisibleCells().map((cell) => (
