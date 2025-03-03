@@ -7,8 +7,6 @@ import Link from "next/link";
 import { login } from "../login/action";
 import { toast } from 'react-toastify';
 import { useRouter } from "next/navigation";
-
-
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
@@ -39,7 +37,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+    <div className="flex h-[80vh] items-center justify-center bg-gray-100 p-4 overflow-y-auto">
       <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
 

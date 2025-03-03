@@ -26,11 +26,9 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   
-     const supabase = await createClient()
-     const { data } = await supabase.auth.getUser()
+  const supabase = await createClient()
+  const { data } = await supabase.auth.getUser()
 
-     
-  
   return (
     <html lang="en">
       <body className={` ${geistSans.variable} ${geistMono.variable} antialiased`}>

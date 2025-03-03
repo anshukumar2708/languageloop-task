@@ -36,7 +36,7 @@ export default function TaskManagement() {
 
   return (
     <div className="w-full">
-      <BreadCrumb title="Project List" addButtonPath="/add-data" />
+      <BreadCrumb title="Task Management List" addButtonPath="/add-data" buttonTitle="Add Task Management"/>
       <Table columns={columns} data={data} />
     </div>
   );

@@ -19,10 +19,13 @@ export type IData = {
 
 export default function TaskPage() {
   const [data, setData] = useState<IData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
   const router = useRouter()
 
    // Delete Project by ID
    const handleDelete = async (event:React.MouseEvent,id: string) => {
+    setDeleteLoading(true);
     event.stopPropagation();
     const supabase = createClient();
     const { error } = await supabase.from("project").delete().eq("id", id);
@@ -34,6 +37,7 @@ export default function TaskPage() {
       toast.success("Project deleted successfully!");
       setData((prev) => prev.filter((project) => project.id !== id));
     }
+    setDeleteLoading(false);
   };
 
   const UpdateHandler = (event: React.MouseEvent, row: { original: IData }) => {
@@ -50,7 +54,9 @@ export default function TaskPage() {
       cell: ({ row }) => (
         <div className="flex gap-2">
           <Button onClick={(event: React.MouseEvent) => UpdateHandler(event, row)}>Update</Button>
-          <Button onClick={(event: React.MouseEvent) => handleDelete(event, row.original.id)}>Delete</Button>
+          <Button onClick={(event: React.MouseEvent) => handleDelete(event, row.original.id)}>
+         {deleteLoading ? "Loading"  : "Delete"}
+          </Button>
         </div>
       ),
     },
@@ -64,12 +70,14 @@ export default function TaskPage() {
       else setData(data);
     };
     fetchTasks();
+    setLoading(false);
   }, []);
 
   return (
     <div className="w-full">
       <BreadCrumb title="Project List" addButtonPath="/add-project" buttonTitle="Add Project" />
-      <Table columns={columns} data={data} rowClickPath="task-management" />
+      {loading && <div className='w-full h-[60vh] flex justify-center items-center'><h1>Loading...</h1></div> }
+      {!loading &&<Table columns={columns} data={data} rowClickPath="task-management" />}
     </div>
   );
 }

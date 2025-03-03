@@ -26,8 +26,6 @@ export default function SignupPage() {
     resolver: zodResolver(signupSchema),
   });
 
-
-
   const onSubmit = async (data : SignupFormData) => {
    const result = await signup(data);
   
@@ -43,10 +41,9 @@ export default function SignupPage() {
   
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
+    <div className="flex h-[80vh] items-center justify-center bg-gray-100 p-4 overflow-y-auto">
       <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Sign Up</h2>
-
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           {/* Username */}
           <div>

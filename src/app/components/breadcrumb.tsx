@@ -9,8 +9,6 @@ interface HeaderProps {
 export default function BreadCrumb({ title, addButtonPath, buttonTitle }: HeaderProps) {
   // const router = useRouter();
 
-  console.log(addButtonPath);
-
   return (
     <div className="flex justify-between items-center bg-gray-100 p-4 rounded-lg shadow mb-4">
       <h2 className="text-xl font-semibold">{title}</h2>
