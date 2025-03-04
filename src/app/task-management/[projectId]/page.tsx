@@ -5,6 +5,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import Button from '@/app/components/button';
 import BreadCrumb from '@/app/components/breadcrumb';
 import Table from '@/app/components/table';
+import { useParams } from 'next/navigation';
 
 const initialData = [
   { id: 1, name: 'Item 1', description: 'Description for item 1' },
@@ -14,6 +15,7 @@ const initialData = [
 
 export default function TaskManagement() {
   const [data, setData] = useState(initialData);
+  const { projectId } = useParams();
 
   const handleDelete = (id: number) => {
     setData((prevData) => prevData.filter((item) => item.id !== id));
@@ -36,8 +38,12 @@ export default function TaskManagement() {
 
   return (
     <div className="w-full">
-      <BreadCrumb title="Task Management List" addButtonPath="/add-data" buttonTitle="Add Task Management"/>
-      <Table columns={columns} data={data} />
+      <BreadCrumb 
+       title="Task List" 
+       addButtonPath={`/add-task-management/${projectId}`} 
+       buttonTitle="Add Task" 
+     />
+      {/* <Table columns={columns} data={data} /> */}
     </div>
   );
 }
