@@ -81,7 +81,7 @@ export default function TaskList() {
         </div>  
         :
       (data?.length > 0 ?
-       < Table columns={columns} data={data} /> 
+       < Table<ITaskData> columns={columns} data={data} /> 
         : <h1 className='mt-10 text-bold text-xl text-center'>No Task List</h1>
       )
       }

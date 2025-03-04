@@ -82,7 +82,7 @@ export default function ProjectList() {
       {loading && <div className='w-full h-[60vh] flex justify-center items-center'><h1>Loading...</h1></div> }
       {!loading && 
       (data?.length > 0 ?
-      <Table columns={columns} data={data} rowClickPath="task-management" />
+      <Table<IData> columns={columns} data={data} rowClickPath="task-management" />
       : <h1 className='mt-10 text-bold text-xl text-center'>No Project List</h1>
       )
       }

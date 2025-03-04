@@ -1,19 +1,17 @@
 import { useParams, useRouter } from 'next/navigation';
 import { getCoreRowModel, flexRender, useReactTable, ColumnDef } from '@tanstack/react-table';
-import { ITaskData } from './task-list';
-import { IData } from './project-list';
 
-
-type IProps = {
-  columns: ColumnDef<IData | ITaskData>[];
-  data: IData[] | ITaskData[];
-  rowClickPath: string;
+type IProps<T> = {
+  columns: ColumnDef<T>[];
+  data: T[];
+  rowClickPath?: string;
 };
 
-export default function Table({ columns, data, rowClickPath }: IProps) {
+
+export default function Table<T>({ columns, data, rowClickPath }: IProps<T>) {
   const router = useRouter();
   const {projectId} = useParams();
-  const table = useReactTable<IData | ITaskData>({
+  const table = useReactTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
@@ -46,7 +44,7 @@ export default function Table({ columns, data, rowClickPath }: IProps) {
             <tr
               key={row.id}
               className="border border-gray-300 cursor-pointer hover:bg-gray-100"
-              onClick={() => handleRowClick(row.original.id)}
+              onClick={() => handleRowClick(row?.original?.id as string)}
             >
               {row.getVisibleCells().map((cell) => (
                 <td key={cell.id} className="p-3 border border-gray-300">

@@ -52,8 +52,6 @@ export default function TaskManagementForm() {
           console.error("Error fetching project:", error.message);
           // toast.error("error.message");
         } else if (data) {
-          console.log("Fetched project:", data);
-          console.log(data);
           setTaskData(data);
           reset({
             name: data.title,
