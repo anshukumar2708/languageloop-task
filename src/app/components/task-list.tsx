@@ -80,7 +80,11 @@ export default function TaskList() {
          <h1>Loading...</h1>
         </div>  
         :
-      <Table columns={columns} data={data} />}
+      (data?.length > 0 ?
+       < Table columns={columns} data={data} /> 
+        : <h1 className='mt-10 text-bold text-xl text-center'>No Task List</h1>
+      )
+      }
     </div>
   );
 }

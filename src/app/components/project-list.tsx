@@ -80,7 +80,12 @@ export default function ProjectList() {
     <div className="w-full">
       <BreadCrumb title="Project List" addButtonPath="/add-project" buttonTitle="Add Project" />
       {loading && <div className='w-full h-[60vh] flex justify-center items-center'><h1>Loading...</h1></div> }
-      {!loading &&<Table columns={columns} data={data} rowClickPath="task-management" />}
+      {!loading && 
+      (data?.length > 0 ?
+      <Table columns={columns} data={data} rowClickPath="task-management" />
+      : <h1 className='mt-10 text-bold text-xl text-center'>No Project List</h1>
+      )
+      }
     </div>
   );
 }
