@@ -1,6 +1,6 @@
 'use client';
 
-import { IData } from "./table";
+import { IData } from "./project-list";
 
 interface ButtonProps {
   onClick: (event: React.MouseEvent<HTMLButtonElement>, row: { original: IData }) => void;

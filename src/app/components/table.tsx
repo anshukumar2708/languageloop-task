@@ -1,31 +1,30 @@
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { getCoreRowModel, flexRender, useReactTable, ColumnDef } from '@tanstack/react-table';
+import { ITaskData } from './task-list';
+import { IData } from './project-list';
 
-export type IData = {
-  created_at: string;
-  description: string;
-  id: string; 
-  name: string;
-  user_id: string;
-};
 
 type IProps = {
-  columns: ColumnDef<IData>[];
-  data: IData[];
+  columns: ColumnDef<IData | ITaskData>[];
+  data: IData[] | ITaskData[];
   rowClickPath: string;
 };
 
 export default function Table({ columns, data, rowClickPath }: IProps) {
   const router = useRouter();
-  const table = useReactTable<IData>({
+  const {projectId} = useParams();
+  const table = useReactTable<IData | ITaskData>({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
   });
 
   const handleRowClick = (id: string) => {
-    router.push(`/${rowClickPath}/${id}`);
-    console.log('id', id);
+    if (!projectId && rowClickPath) { 
+      router.push(`/${rowClickPath}/${id}`);
+    } else {
+      console.error("error");
+    }
   };
 
   return (

@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import Table from './table';
-import Button from './button';
 import BreadCrumb from './breadcrumb';
 import { createClient } from '../utils/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -17,11 +16,11 @@ export type IData = {
   user_id: string;
 };
 
-export default function TaskPage() {
+export default function ProjectList() {
   const [data, setData] = useState<IData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [deleteLoading, setDeleteLoading] = useState<boolean>(false);
-  const router = useRouter()
+  const router = useRouter();
 
    // Delete Project by ID
    const handleDelete = async (event:React.MouseEvent,id: string) => {
@@ -40,9 +39,9 @@ export default function TaskPage() {
     setDeleteLoading(false);
   };
 
-  const UpdateHandler = (event: React.MouseEvent, row: { original: IData }) => {
+  const UpdateHandler = (event: React.MouseEvent, id: string) => {
     event.stopPropagation();
-    router.push(`/update-project/${row.original.id}`);
+    router.push(`/update-project/${id}`);
   };
 
   const columns: ColumnDef<IData>[] = [
@@ -53,10 +52,14 @@ export default function TaskPage() {
       id: 'actions',
       cell: ({ row }) => (
         <div className="flex gap-2">
-          <Button onClick={(event: React.MouseEvent) => UpdateHandler(event, row)}>Update</Button>
-          <Button onClick={(event: React.MouseEvent) => handleDelete(event, row.original.id)}>
-         {deleteLoading ? "Loading"  : "Delete"}
-          </Button>
+          <button 
+             onClick={(event) => UpdateHandler(event, row.original.id)} className='px-4 py-2 bg-blue-500 text-white rounded'>Update</button>
+          <button 
+             onClick={(event) => handleDelete(event, row.original.id)}
+             className='px-4 py-2 bg-blue-500 text-white rounded'
+             >
+               {deleteLoading ? "Loading"  : "Delete"}
+          </button>
         </div>
       ),
     },

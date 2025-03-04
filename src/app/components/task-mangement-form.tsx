@@ -6,6 +6,8 @@ import * as z from "zod";
 import { useParams, useRouter } from "next/navigation";
 import { createClient } from "../utils/supabase/client";
 import { toast } from "react-toastify";
+import { useEffect, useState } from "react";
+import { ITaskData } from "./task-list";
 
 const statusOptions =[
     { key: "Completed",
@@ -28,16 +30,39 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
-export default function TaskManagementForm({ initialData }: { initialData?: FormData }) {
+export default function TaskManagementForm() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
   const router = useRouter();
   const {projectId, id} = useParams();
+  const [taskData, setTaskData] = useState<ITaskData>()
+
+    useEffect(() => {
+      const fetchTask = async () => {
+        if (!id) return; 
+        const supabase = createClient();
+        const { data, error } = await supabase.from("task_management").select("*").eq("id", id).single();
+        if (error) {
+          console.error("Error fetching project:", error.message);
+          // toast.error("error.message");
+        } else if (data) {
+          console.log("Fetched project:", data);
+          console.log(data);
+          setTaskData(data);
+          reset({
+            name: data.title,
+            status: data.status,
+          });
+        }
+      };
+      fetchTask();
+    }, [id, reset]);
 
     const onSubmit = async (data: FormData) => {
       const supabase = createClient();
@@ -47,12 +72,12 @@ export default function TaskManagementForm({ initialData }: { initialData?: Form
           .from("task_management")
           .update({ title: data.name, status: data.status })
           .eq("id", id);
-  
         if (error) {
-          console.error("Error updating project:", error.message);
-          toast.error("Failed to update project.");
+          console.error("Error updating task:", error.message);
+          toast.error("Failed to update Task.");
         } else {
           toast.success("Task updated successfully!");
+          router.push(`/task-management/${taskData?.project_id}`);
         }
       } else if(projectId) {
         const { error } = await supabase
@@ -64,16 +89,17 @@ export default function TaskManagementForm({ initialData }: { initialData?: Form
           toast.error("Something went wrong!");
         } else {
           toast.success("Task added successfully!");
+          router.push(`/task-management/${projectId}`);
         }
       }
-      router.push(`/task-management/${projectId}`);
+     
     };
 
   return (
     <div className="flex min[80vh] items-center justify-center p-4">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6">
         <h2 className="text-2xl font-semibold text-center mb-4">
-          {initialData ? "Update Task" : "Add Task"}
+          {id ? "Update Task" : "Add Task"}
         </h2>
         
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -111,7 +137,7 @@ export default function TaskManagementForm({ initialData }: { initialData?: Form
             disabled={isSubmitting}
             className="w-full bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition disabled:bg-gray-400"
           >
-            {isSubmitting ? "Submitting..." : initialData ? "Update Task" : "Add Task"}
+            {isSubmitting ? "Submitting..." : id ? "Update Task" : "Add Task"}
           </button>
         </form>
       </div>

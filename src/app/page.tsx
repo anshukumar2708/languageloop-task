@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "./utils/supabase/server";
-import TaskPage from "./components/task-table";
+import ProjectList from "./components/project-list";
 
 export default async function Home() {
   // Get the Supabase client with auth cookies
@@ -14,7 +14,7 @@ export default async function Home() {
 
   return (
     <div className="w-full">
-     <TaskPage/>
+     <ProjectList/>
     </div>
   );
 }
